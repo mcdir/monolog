@@ -88,17 +88,22 @@ class FlowdockFormatter implements FormatterInterface
 
     /**
      * @param string $message
+     * @param string $encoding
      *
      * @return string
      */
-    public function getShortMessage($message)
+    public function getShortMessage($message, $encoding = false)
     {
         $maxLength = 45;
 
-        if (strlen($message) > $maxLength) {
-            $message = substr($message, 0, $maxLength - 4) . ' ...';
+        if (! $encoding) {
+            if (strlen($message) > $maxLength) {
+                $message = substr($message, 0, $maxLength - 4) . ' ...';
+            }
+        } else if (mb_strlen($message,  $encoding) > $maxLength) {
+            $message = mb_substr($message, 0, $maxLength - 4, $encoding) . ' ...';
         }
-
+    
         return $message;
     }
 }
